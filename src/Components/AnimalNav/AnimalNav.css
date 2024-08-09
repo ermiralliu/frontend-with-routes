@@ -1,0 +1,43 @@
+@media (max-width:700px){
+    .nav-bar{
+        width: 90vw;
+    }
+}
+@media (min-width:701px){
+    .nav-bar{
+        margin: 0 auto;
+        width: 50vw;
+    }
+}
+.animal-nav-h{
+    height:0;                   /*to not reserve space for the header*/
+    position:relative;
+    top: 50%;
+    margin:0 auto;
+    color:white;
+}
+.nav-bar{
+    padding-top: 0.1%;
+    margin: 0 auto;
+    display: flex;
+}
+.choice-div{
+    margin: 0 auto;
+    flex: 1;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 20px;
+    transition: flex 0.5s ease;
+    height: 30vh;  
+}
+.choice-div:hover{
+    flex:2;
+}
+
+.head-image{
+    min-width: 105%;
+    max-width: 120%; /* nuk e kuptoj pse, por e rendesishme per mos tu bere teper e madhe*/
+    min-height: 105%;
+    object-fit: cover;
+    height: 30vh;
+}

@@ -1,0 +1,13 @@
+.middle{
+    display: block;
+    width: 30vw;
+    margin: auto;
+    padding-top: 1vh;
+}
+
+.middle input{
+    width: 100%;
+    height: 40px;
+    border-radius: 16px;
+    font-size: large;
+}

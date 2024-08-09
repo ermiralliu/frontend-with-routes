@@ -1,0 +1,23 @@
+html, body{
+  overflow-x: hidden;
+}
+
+.dark{
+  background-color: black;
+}
+.light{
+  background-color: white;
+}
+/* position: fixed if you want it to stay in the show in the same place even when scrolling */
+
+.adm{
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: red;
+  color: white;
+  font-size: larger;
+  text-decoration: none;
+  padding: 10px;
+  border-bottom-left-radius: 8px;
+}
