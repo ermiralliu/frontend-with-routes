@@ -1,20 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import makeTheme from "../useTheme";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import './AnimalInsertPage.css';
 
 
 export default function AnimalInsertPage() {
 	const [animalType, setAnimalType] = useState('dogs');
 
-	const location = useLocation();
-	useEffect(()=>{
-		makeTheme(location.state);
-	}, [location.state])
 	//I have no idea why, but the input boxes are curved. Cool though, ig
 	return (
 		<>
-		<Link to='../' className='link back' state={{darkMode: location.state?.darkMode}}> Back </Link>
+		<Link to='../' className='link back'> Back </Link>
 		<div className='main'>
 			<form className='middle' action={`../insert/${animalType}`} method="POST">
 				<h1 className='text-middle'>General Information</h1>
@@ -44,19 +39,10 @@ export default function AnimalInsertPage() {
 	);
 }
 
-// const animals: { [key: string]: string[] } = (() => {
-// 	const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
-// 	const dogs = ['Breed Group ', 'Size ', 'Lifespan ', ...cats];
-
-// 	return Object.freeze({
-// 		dogs,
-// 		cats,
-// 		birds: ['Species ', 'Family ', 'Habitat ', 'Place_found ', 'Diet (separate different foods with a comma)', 'Weight (in kg) ', 'Height (in cm) ']
-// 	});
-// })();
 
 function SpecificSection(props: { animalType: string }) {
 	const animals: { [key: string]: string[] } = useMemo(()=> {
+		console.log("using memo");	//okay it only gets calculated once as expected
 		const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
 		const dogs = ['Breed_Group ', 'Size ', 'Lifespan ', ...cats];
 	

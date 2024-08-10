@@ -7,6 +7,7 @@ import Home from './Pages';
 import ErrorPage from "./Pages/ErrorPage";
 import AnimalInsertPage from "./Pages/AnimalInsertPage";
 import './Pages/index.css';
+import { DarkModeToggle } from "./Components";
 
 
 const router = createBrowserRouter([
@@ -14,7 +15,6 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home/>,
         errorElement: <ErrorPage/>
-
     },
     {
         path: '/admin/*',
@@ -39,6 +39,7 @@ const root = createRoot( document.getElementById('root') as HTMLElement );
 
 root.render(
     <React.StrictMode>
+        <DarkModeToggle/>    
         <RouterProvider router={router}/>
     </React.StrictMode>
 );

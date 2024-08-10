@@ -13,3 +13,10 @@ th{
 .text-middle{
   text-align: center;
 }
+
+.flex-middle{
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

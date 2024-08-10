@@ -1,34 +1,84 @@
 import { useEffect, useRef, useState } from "react";
 import config from "./config.json" with { type: "json" };
-import { Link, useLocation} from "react-router-dom";
-import makeTheme from '../useTheme';
+import { Link } from "react-router-dom";
 import { AnimalModal } from "../Components";
+import "./AnimalInsertPage.css";
 
 type Animal = { image: string; name: string, id: number, [key: string]: string | number };
 
 export default function Admin() {
-	const location = useLocation();
+	const [logged, logIn] = useState<boolean|null>(false);
+
+	useEffect(()=>{	//does a get request so the server checks the cookies
+		fetch('someUrl').then( res => res.json())
+			.then( res => logIn(res.success) )
+			.catch( err => console.error(err));
+	}, []);
+
+	const bodyClass = document.body.className;
+	
 	useEffect(()=>{
-		makeTheme(location.state);
 		document.body.className += ' overflow';
-	}, [location.state])
-	const [showDialog, setDialog] = useState(false);
-	const currentAnimal = useRef<Animal | null>(null);
+	}, [bodyClass]);
+
+	if(logged === null)
+		return <></>;
+
 	return (<>
-		<Link to='/' className='link back' state={{darkMode: location.state?.darkMode}}> Back </Link>
-		<Link to='./new' className='link adm' state={{darkMode: location.state?.darkMode}}> New </Link>
-		<h1 style={{textAlign : 'center'}} > Haha, you admin now </h1>
-		{['dogs', 'cats', 'birds'].map((animal, index) => <AnimalTable key={index} animal={animal} currentAnimal={currentAnimal} setDialog={setDialog} />)}
-		{(showDialog && currentAnimal.current != null) ? 
-			<AnimalModal animal={currentAnimal.current} setShow={setDialog} writable={true}>
-				<tr>
-					<td rowSpan={2}>
-						<button type='button'> Update </button>
-						<button type='button'> Delete </button>
-					</td>
-				</tr>
-			</AnimalModal> : <></>}
+		<Link to='/' className='link back' > Back </Link>
+		{ !logged ? <LogInPage logIn={logIn}/> :
+		<LoggedIn/>}
 	</>)
+}
+
+function LogInPage(props:{logIn: React.Dispatch<React.SetStateAction<boolean | null>>}){
+	function validation(){
+		fetch("/echo/json/", {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: "POST",
+			body: JSON.stringify({a: 1, b: 2})
+		}).then(res=>res.json())
+		.then( res => props.logIn(res.success))
+		.catch( err => console.error(err));
+	}
+
+	return <form className='text-middle flex-middle'>
+		<table className='text-middle'>
+			<tbody>
+				<tr>
+					<td><label htmlFor='email'>Email:</label></td>
+					<td><input id='email' type='text'/></td>
+				</tr>
+				<tr>
+					<td><label htmlFor='password'>Password:</label></td>
+					<td><input id='password' type='password'/></td>
+				</tr>
+				<tr><td  colSpan={2}><button onClick={validation}> Log In </button></td></tr>
+			</tbody>
+		</table>
+	</form>;
+}
+
+function LoggedIn(){
+		const [showDialog, setDialog] = useState(false);
+		const currentAnimal = useRef<Animal | null>(null);
+		return (<>
+			<Link to='./new' className='link adm'>  New </Link>
+			<h1 style={{textAlign : 'center'}} > Haha, you admin now </h1>
+			{['dogs', 'cats', 'birds'].map((animal, index) => <AnimalTable key={index} animal={animal} currentAnimal={currentAnimal} setDialog={setDialog} />)}
+			{(showDialog && currentAnimal.current != null) ? 
+				<AnimalModal animal={currentAnimal.current} setShow={setDialog} writable={true}>
+					<tr>
+						<td rowSpan={2}>
+							<button type='button'> Update </button>
+							<button type='button'> Delete </button>
+						</td>
+					</tr>
+				</AnimalModal> : <></>}
+		</>)
 }
 
 function AnimalTable(props: { animal: string, currentAnimal: React.MutableRefObject<Animal | null>, setDialog: (value: boolean) => void }) {

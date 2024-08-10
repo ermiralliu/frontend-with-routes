@@ -1,7 +1,7 @@
 .switch {
-    position: relative;
+    position: absolute;
     display: float;
-    float: left;
+    left:5vw;
     vertical-align: top;
     width: 60px;
     height: 34px;
