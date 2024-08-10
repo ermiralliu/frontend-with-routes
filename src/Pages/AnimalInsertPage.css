@@ -1,0 +1,15 @@
+th{
+  text-align: left;
+}
+
+.main{
+  width: 100vw;
+}
+
+.middle{
+  margin: 0 auto;
+}
+
+.text-middle{
+  text-align: center;
+}

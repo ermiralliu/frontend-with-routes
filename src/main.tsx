@@ -6,6 +6,7 @@ import Admin from './Pages/Admin';
 import Home from './Pages';
 import ErrorPage from "./Pages/ErrorPage";
 import AnimalInsertPage from "./Pages/AnimalInsertPage";
+import './Pages/index.css';
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,9 @@ const router = createBrowserRouter([
         ]
     }
 ]);
+
+// const isDark = JSON.parse(localStorage.getItem('darkMode') ?? 'true') as boolean;
+// document.body.className = isDark ? 'dark'  : 'light';   //this way it doesn't change between routes
 
 const root = createRoot( document.getElementById('root') as HTMLElement );
 

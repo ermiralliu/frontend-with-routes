@@ -1,60 +1,78 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import makeTheme from "../useTheme";
+import './AnimalInsertPage.css';
 
-export default function AnimalInsertPage(){
-    const [animalType, setAnimalType] = useState('dogs');
 
-    return(
-        <form id="the-form" action={`../insert/${animalType}`} method="POST">
-            <h1>General Information</h1>
-            <table className="covered">
-                { ['name', 'description', 'image'].map(( str: string, index) => 
-                    <tr key={index}>
-                        <td> {str.charAt(0).toUpperCase() + str.slice(1)} </td>
-                        <td><input name={str}/></td>
-                    </tr>)  
-                }
-            </table>
-            <h2>Specific Information</h2>
-            <div id="buttons">
-                <button className="animal-button" onClick={()=> setAnimalType('dogs')} type="button"> Dog </button>
-                <button className="animal-button" onClick={()=> setAnimalType('cats')} id="Cats" type="button"> Cat </button>
-                <button className="animal-button" onClick={()=> setAnimalType('birds')} id="Birds" type="button"> Bird </button>
-            </div>
-            <SpecificSection animalType={animalType}/>
-            <div id="finish">
-                <button id="last" type="submit" > Add to Database </button>
-            </div>
-        </form>
-    );
+export default function AnimalInsertPage() {
+	const [animalType, setAnimalType] = useState('dogs');
+
+	const location = useLocation();
+	useEffect(()=>{
+		makeTheme(location.state);
+	}, [location.state])
+	//I have no idea why, but the input boxes are curved. Cool though, ig
+	return (
+		<>
+		<Link to='../' className='link back' state={{darkMode: location.state?.darkMode}}> Back </Link>
+		<div className='main'>
+			<form className='middle' action={`../insert/${animalType}`} method="POST">
+				<h1 className='text-middle'>General Information</h1>
+				<table>
+					<tbody>
+						{['name', 'description', 'image'].map((str: string, index) =>
+							<tr key={index}>
+								<td> {str.charAt(0).toUpperCase() + str.slice(1)} </td>
+								<td><input name={str} /></td>
+							</tr>)
+						}
+					</tbody>
+				</table>
+				<h2 className='text-middle'>Specific Information</h2>
+				<div className='text-middle'>
+					<button className="animal-button" onClick={() => setAnimalType('dogs')} type="button"> Dog </button>
+					<button className="animal-button" onClick={() => setAnimalType('cats')} id="Cats" type="button"> Cat </button>
+					<button className="animal-button" onClick={() => setAnimalType('birds')} id="Birds" type="button"> Bird </button>
+				</div>
+				<SpecificSection animalType={animalType} />
+				<div className="text-middle">
+					<button type="submit" > Add to Database </button>
+				</div>
+			</form>
+		</div>
+	</>
+	);
 }
 
-const animals :{[key:string]:string[]} = (()=>{
-    const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
-    const dogs = ['Breed Group ', 'Size ', 'Lifespan ', ...cats];
+const animals: { [key: string]: string[] } = (() => {
+	const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
+	const dogs = ['Breed Group ', 'Size ', 'Lifespan ', ...cats];
 
-    return Object.freeze({
-        dogs,
-        cats,
-        birds: ['Species ','Family ','Habitat ','Place_found ', 'Diet (separate different foods with a comma)', 'Weight (in kg) ', 'Height (in cm) ']
-    });
+	return Object.freeze({
+		dogs,
+		cats,
+		birds: ['Species ', 'Family ', 'Habitat ', 'Place_found ', 'Diet (separate different foods with a comma)', 'Weight (in kg) ', 'Height (in cm) ']
+	});
 })();
 
-function SpecificSection(props:{animalType:string}){
-    const array = animals[ props.animalType ];
-    return (
-        <div id="specific-div" className="covered">
-            <h2 id="animal"> {props.animalType} </h2>
-            <table id='specific'>
-                { array.map( (value, index) => 
-                    <tr key={index}>
-                        <th> {value} </th>
-                        <td> 
-                            <input name={ `${value[0].toLowerCase() + value.slice(1).split(' ')}`}/>
-                        </td>
-                    </tr>
-                )}
-            </table>
-        </div>
-    );
+function SpecificSection(props: { animalType: string }) {
+	const array = animals[props.animalType];
+	return (
+		<div id="specific-div" className="covered">
+			<h2 id="animal" className='text-middle'> {props.animalType.charAt(0).toUpperCase() + props.animalType.slice(1)} </h2>
+			<table id='specific'>
+				<tbody>
+					{array.map((value, index) =>
+						<tr key={index}>
+							<td> {value} </td>
+							<td>
+								<input name={`${value[0].toLowerCase() + value.slice(1).split(' ')}`} />
+							</td>
+						</tr>
+					)}
+				</tbody>
+			</table>
+		</div>
+	);
 
 }
