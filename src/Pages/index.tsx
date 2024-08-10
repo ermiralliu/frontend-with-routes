@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimalType, Animal } from '../Components/AnimalChoice';
-import Components from '../Components';
+//import Components from '../Components';
+import {FigureSection, SearchBar, AnimalNav, DarkModeToggle} from '../Components';
 import './index.css';
+//import { About, Contact } from '../Components/FigureSection'; we're gonna put these inside a dialog and do the eventHandling later
 
 
-const {FigureSection, SearchBar, AnimalNav, DarkModeToggle} = Components;
+//const {FigureSection, SearchBar, AnimalNav, DarkModeToggle} = Components;
 
 export default function Home(){
   const [darkMode, setDarkMode] = useState( JSON.parse(localStorage.getItem('darkMode') ?? 'true') as boolean);

@@ -16,12 +16,15 @@ const router = createBrowserRouter([
 
     },
     {
-        path: '/admin',
-        element: <Admin/>,
+        path: '/admin/*',
         errorElement: <ErrorPage/>,
         children: [
             {
-                path: 'admin/new',
+                index: true, 
+                element: <Admin/>
+            },
+            {
+                path: 'new',        //this is a subroute in admin now. Good. React Routes are ez
                 element: <AnimalInsertPage/>
             }
         ]

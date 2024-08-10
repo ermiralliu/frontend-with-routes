@@ -5,12 +5,14 @@ import SearchBar from "./SearchBar";
 import DarkModeToggle from "./DarkModeToggle";
 
 
-const Components = Object.freeze({
-    AnimalFigure,
-    AnimalNav,
-    FigureSection,
-    SearchBar,
-    DarkModeToggle
-});
+// const Components = Object.freeze({
+//     AnimalFigure,
+//     AnimalNav,
+//     FigureSection,
+//     SearchBar,
+//     DarkModeToggle
+// });
 
-export default Components;
+export {AnimalFigure, AnimalNav, FigureSection, SearchBar, DarkModeToggle};
+
+//export default Components;
