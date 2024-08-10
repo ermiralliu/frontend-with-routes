@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import makeTheme from "../useTheme";
 import './AnimalInsertPage.css';
@@ -44,19 +44,31 @@ export default function AnimalInsertPage() {
 	);
 }
 
-const animals: { [key: string]: string[] } = (() => {
-	const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
-	const dogs = ['Breed Group ', 'Size ', 'Lifespan ', ...cats];
+// const animals: { [key: string]: string[] } = (() => {
+// 	const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
+// 	const dogs = ['Breed Group ', 'Size ', 'Lifespan ', ...cats];
 
-	return Object.freeze({
-		dogs,
-		cats,
-		birds: ['Species ', 'Family ', 'Habitat ', 'Place_found ', 'Diet (separate different foods with a comma)', 'Weight (in kg) ', 'Height (in cm) ']
-	});
-})();
+// 	return Object.freeze({
+// 		dogs,
+// 		cats,
+// 		birds: ['Species ', 'Family ', 'Habitat ', 'Place_found ', 'Diet (separate different foods with a comma)', 'Weight (in kg) ', 'Height (in cm) ']
+// 	});
+// })();
 
 function SpecificSection(props: { animalType: string }) {
+	const animals: { [key: string]: string[] } = useMemo(()=> {
+		const cats = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
+		const dogs = ['Breed_Group ', 'Size ', 'Lifespan ', ...cats];
+	
+		return Object.freeze({
+			dogs,
+			cats,
+			birds: ['Species ', 'Family ', 'Habitat ', 'Place_found ', 'Diet (separate different foods with a comma)', 'Weight (in kg) ', 'Height (in cm) ']
+		});
+	}, []);
+
 	const array = animals[props.animalType];
+	
 	return (
 		<div id="specific-div" className="covered">
 			<h2 id="animal" className='text-middle'> {props.animalType.charAt(0).toUpperCase() + props.animalType.slice(1)} </h2>
@@ -66,7 +78,7 @@ function SpecificSection(props: { animalType: string }) {
 						<tr key={index}>
 							<td> {value} </td>
 							<td>
-								<input name={`${value[0].toLowerCase() + value.slice(1).split(' ')}`} />
+								<input name={`${value[0].toLowerCase() + value.substring(1, value.indexOf(' '))}`} />
 							</td>
 						</tr>
 					)}
