@@ -15,15 +15,13 @@ export default function Admin() {
 			{
 				credentials: 'include'
 			})
-		.then( res => res.json())
-		.then( res => {
-			console.log(res);
-			let log = false;
-			if('id' in res && 'name' in res && 'email' in res)
-				log = true;
-			logIn( log );
-		})
-		.catch( err => console.error(err));
+			.then( res => {
+				console.log(res.status);
+				logIn( res.status === 200 );
+				return res.json();
+			})
+			.then( res => console.log(res))
+			.catch( err => console.error(err));
 	}, [loggSubmitted]);
 	
 	useEffect( ()=>{
