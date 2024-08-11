@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import './DarkModeToggle.css';
-import { isDark } from './isDark';
 import { useBeforeUnload } from 'react-router-dom';
 
 export default function DarkModeToggle() {
@@ -8,7 +7,10 @@ export default function DarkModeToggle() {
   const checked = useRef(darkMode);
 
   useEffect(() => {
-    document.body.className = darkMode ? 'dark' : 'light';
+    if(document.body.className.includes('overflow'))
+      document.body.className = darkMode ? 'dark overflow' : 'light overflow';
+    else
+      document.body.className = darkMode ? 'dark' : 'light';
     checked.current = darkMode;
   }, [darkMode]);
 
@@ -28,4 +30,8 @@ export default function DarkModeToggle() {
       <span className='slider round'></span>
     </label>
   );
+}
+
+function isDark(){
+  return JSON.parse(localStorage.getItem('darkMode') ?? 'true') as boolean;
 }

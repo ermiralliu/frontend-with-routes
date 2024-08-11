@@ -36,7 +36,7 @@ function FigureSection(props:{currentURL: string}) :JSX.Element{  //the main sec
 	return (
 		<>
 			<div className={'figure-section'}> {fig} </div>
-			{ showModal ? <AnimalModal animal={ figures[animal.current] } setShow={setModal} writable={false}><></></AnimalModal> : <></>}  
+			{ showModal ? <AnimalModal animal={ figures[animal.current] } setShow={setModal} isWritable={false}/> : <></>}  
 		</>
 	);     
 }

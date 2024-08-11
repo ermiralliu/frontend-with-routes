@@ -4,20 +4,16 @@ import { AnimalType, Animal } from '../Components/AnimalChoice';
 import {FigureSection, SearchBar, AnimalNav} from '../Components';
 import { Link } from 'react-router-dom';
 //import { About, Contact } from '../Components/FigureSection'; we're gonna put these inside a dialog and do the eventHandling later
+// const location = useLocation();  <<= this is used to pass stuff between routes, but I avoided that here
 
-
-//const {FigureSection, SearchBar, AnimalNav, DarkModeToggle} = Components;
 
 export default function Home(){
-  // const location = useLocation();
-  // console.log(location.state);  //this will be null or undefined when opened the first time, so we use JSONparse
   const [animal, setAnimal] = useState<AnimalType>(localStorage.getItem('animal') as AnimalType ?? Animal.DOG);
   const [search, setSearch] = useState<string>('');
   
   const animalToSave = useRef(animal);
 
   useEffect( ()=> {animalToSave.current = animal}, [animal])
-
 
   useEffect( ()=>{
     console.log( `Starting animal: ${animalToSave.current}`)
@@ -30,7 +26,7 @@ export default function Home(){
   
   return (
     <>
-      <Link className='link adm' to='admin'> Log In </Link>
+      <Link className='link adm red' to='admin'> Log In </Link>
       <AnimalNav changeView={setAnimal}/>
       <SearchBar setUrl={setSearch}/>  
       <FigureSection currentURL={URL}/>

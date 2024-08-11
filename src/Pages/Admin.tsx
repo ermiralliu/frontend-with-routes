@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import config from "./config.json" with { type: "json" };
 import { Link } from "react-router-dom";
 import { AnimalModal } from "../Components";
@@ -7,56 +7,73 @@ import "./AnimalInsertPage.css";
 type Animal = { image: string; name: string, id: number, [key: string]: string | number };
 
 export default function Admin() {
-	const [logged, logIn] = useState<boolean|null>(false);
-
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [logged, logIn] = useState<boolean|null>(null);
+	//const logged = true;
 	useEffect(()=>{	//does a get request so the server checks the cookies
-		fetch('someUrl').then( res => res.json())
-			.then( res => logIn(res.success) )
+		fetch(config.url2 + '/api/user',
+			{
+				credentials: 'include'
+			}
+		).then( res => res.json())
+			.then( res => logIn(res.status !== 401 ) )
 			.catch( err => console.error(err));
 	}, []);
 
-	const bodyClass = document.body.className;
-	
-	useEffect(()=>{
-		document.body.className += ' overflow';
-	}, [bodyClass]);
+	useEffect( ()=>{
+		if(!document.body.classList.contains('overflow') )
+			document.body.classList.add('overflow');
+		return ()=> {document.body.classList.remove('overflow')}
+	},[]);
 
 	if(logged === null)
 		return <></>;
 
 	return (<>
-		<Link to='/' className='link back' > Back </Link>
-		{ !logged ? <LogInPage logIn={logIn}/> :
+		<Link to='/' className='link adm red' > Back </Link>
+		{ !logged ? <LogInPage logIn={logIn} /> :
 		<LoggedIn/>}
 	</>)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function LogInPage(props:{logIn: React.Dispatch<React.SetStateAction<boolean | null>>}){
-	function validation(){
-		fetch("/echo/json/", {
+// eslint-disable-next-line
+	function handleSubmit(event:FormEvent){
+		event.preventDefault()
+		const form = new FormData(event.target as HTMLFormElement);
+		const data : {[key:string]:FormDataEntryValue} = {};
+		for(const [key,value] of form.entries())
+			data[key] = value;
+
+		fetch(config.url2 + '/api/login', {
+			credentials: 'include',		//needed to send and recieve cookies
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
-			method: "POST",
-			body: JSON.stringify({a: 1, b: 2})
+			method: 'POST' ,
+			body: JSON.stringify(data)
 		}).then(res=>res.json())
-		.then( res => props.logIn(res.success))
+		.then( res => {
+			props.logIn(res.status !== 401)
+			console.log(res);
+		})
 		.catch( err => console.error(err));
 	}
 
-	return <form className='text-middle flex-middle'>
+	return <form className='text-middle flex-middle' method='POST' onSubmit={handleSubmit} action={config.url2 + '/api/login'}>
 		<table className='text-middle'>
 			<tbody>
 				<tr>
 					<td><label htmlFor='email'>Email:</label></td>
-					<td><input id='email' type='text'/></td>
+					<td><input id='email' name='Email' type='text'/></td>
 				</tr>
 				<tr>
 					<td><label htmlFor='password'>Password:</label></td>
-					<td><input id='password' type='password'/></td>
+					<td><input id='password' name='Password' type='password'/></td>
 				</tr>
-				<tr><td  colSpan={2}><button onClick={validation}> Log In </button></td></tr>
+				<tr><td  colSpan={2}><button type='submit'> Log In </button></td></tr>
 			</tbody>
 		</table>
 	</form>;
@@ -65,19 +82,15 @@ function LogInPage(props:{logIn: React.Dispatch<React.SetStateAction<boolean | n
 function LoggedIn(){
 		const [showDialog, setDialog] = useState(false);
 		const currentAnimal = useRef<Animal | null>(null);
+		
 		return (<>
-			<Link to='./new' className='link adm'>  New </Link>
-			<h1 style={{textAlign : 'center'}} > Haha, you admin now </h1>
-			{['dogs', 'cats', 'birds'].map((animal, index) => <AnimalTable key={index} animal={animal} currentAnimal={currentAnimal} setDialog={setDialog} />)}
-			{(showDialog && currentAnimal.current != null) ? 
-				<AnimalModal animal={currentAnimal.current} setShow={setDialog} writable={true}>
-					<tr>
-						<td rowSpan={2}>
-							<button type='button'> Update </button>
-							<button type='button'> Delete </button>
-						</td>
-					</tr>
-				</AnimalModal> : <></>}
+			<Link to='./new' className='blue link adm '>  New </Link>
+			<div>
+				<h1 style={{textAlign : 'center', marginTop : 0, paddingTop: 10}} > Haha, you admin now </h1>
+				{['dogs', 'cats', 'birds'].map((animal, index) => <AnimalTable key={index} animal={animal} currentAnimal={currentAnimal} setDialog={setDialog} />)}
+				{(showDialog && currentAnimal.current != null) ? 
+					<AnimalModal animal={currentAnimal.current} setShow={setDialog} isWritable={true}/> : <></>}
+			</div>	
 		</>)
 }
 

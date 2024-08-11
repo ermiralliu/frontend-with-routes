@@ -9,7 +9,7 @@ export default function AnimalInsertPage() {
 	//I have no idea why, but the input boxes are curved. Cool though, ig
 	return (
 		<>
-		<Link to='../' className='link back'> Back </Link>
+		<Link to='../' className='link adm red'> Back </Link>
 		<div className='main'>
 			<form className='middle' action={`../insert/${animalType}`} method="POST">
 				<h1 className='text-middle'>General Information</h1>

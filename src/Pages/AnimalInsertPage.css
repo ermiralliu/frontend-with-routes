@@ -14,6 +14,10 @@ th{
   text-align: center;
 }
 
+.blue{
+  background-color: blue;
+}
+
 .flex-middle{
   height: 40vh;
   display: flex;
