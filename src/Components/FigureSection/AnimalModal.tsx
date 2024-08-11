@@ -5,7 +5,7 @@ import { Animal } from "./FigureSection";
 
 export default function AnimalModal(props: { animal: Animal, setShow: (value: boolean) => void, isWritable: boolean }) {
 	const dialog = useRef<HTMLDialogElement>(null);
-
+	
 	//const form = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
