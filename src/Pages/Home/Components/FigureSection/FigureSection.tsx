@@ -4,32 +4,21 @@ import './FigureSection.css';
 import AnimalModal from '../../../../SharedComponents/AnimalModal';
 import { API_ANIMALS } from '../../../../constants';
 import { get } from '../../../../eventHandler';
+import { AnimalObject } from '../../../../AnimalObject';
 
-export type Animal = {image_url?: string, name: string, id: number, [key: string]: string|number|undefined};   //I actually fucked up with this naming
-
-function FigureSection(props:{currentURL: string}): JSX.Element{  //the main section basically 
-	const [ figures, setFigures ] = useState([] as Animal[]);   //everytime the state is changed, we get a rerendering,
+export default function FigureSection(props:{currentURL: string}): JSX.Element{  //the main section basically 
+	const [ figures, setFigures ] = useState([] as AnimalObject[]);   //everytime the state is changed, we get a rerendering,
 	//so I only rerender once the animal array is returned successfully
 	const [ showModal, setModal] = useState(false);
 	const animal = useRef(1);
 
 	useEffect( ()=>{
-    setFigures( await get(API_ANIMALS+'/'+props.currentURL) ?? [] );
-		// get(props.currentURL);
-		// function get(currentURL: string){
-      // const url = API_ANIMALS + '/' + currentURL;
-			// fetch(url)
-			// 	.then( (respose) => {
-			// 		if(respose.ok)
-			// 			return respose.json();
-			// 	}).then( (resJson) =>{
-			// 		setFigures(resJson);
-			// 	}).catch( err=>{
-			// 		console.error(err);
-			// 		alert("Could't GET figures");
-			// 	});
-		// }
+
+    const url = API_ANIMALS + '/' + props.currentURL;
+    get(url).then( result => setFigures(result ?? []) );
+
 	}, [props.currentURL]);  //it only works when currentURL changes
+
 	const fig = figures?.map((element, index)=>      //we make an animal section for each animal
 		<AnimalFigure key={index} animal={element} onClick={ (currentAnimal:number)=> {
 			animal.current = currentAnimal;
@@ -43,5 +32,3 @@ function FigureSection(props:{currentURL: string}): JSX.Element{  //the main sec
 		</>
 	);     
 }
-
-export default FigureSection; 

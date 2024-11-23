@@ -1,0 +1,1 @@
+export type AnimalObject = { image_url?: string; name: string; id: number; [key: string]: string | number | undefined; }; //I actually fucked up with this naming

@@ -1,14 +1,27 @@
-import { API_LOGIN } from "../../constants";
-import handleSubmit from "../../eventHandler";
+import { useEffect, useState } from "react";
+import { postLogin } from "../../eventHandler";
+import redirect from "../redirect";
 
 
-export function LogInPage(props: { logIn: (status: number)=> void; }) {
+export default function LogInPage() {
+  //console.log(window.location);
+  const [show, setShow] = useState(false);
+  useEffect(()=>{
+    redirect(setShow);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  if(!show)
+    return <></>; //I need to have a loading animation here
 
   return <form 
     className='text-middle flex-middle' 
     method='POST' 
     onSubmit={
-      (event) => handleSubmit(API_LOGIN, event, undefined, props.logIn, false)
+      async (event) =>{
+        if(await postLogin(event))
+          window.location.href = window.location.origin + '/admin/user';
+      } 
     }
   >
     <table className='text-middle'>

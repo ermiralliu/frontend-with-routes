@@ -29,7 +29,7 @@ export async function get(url: string){
   if( !res.ok )
     return null;
 
-  const resJson = res.json();
+  const resJson = await res.json();
   console.log(resJson);
 
   return resJson;
@@ -129,3 +129,33 @@ export default function handleSubmit(
   }).catch(err => console.error(err));
 }
 
+
+// below is a more complete fetch:
+
+// fetch(API_USER, {
+//   credentials: 'include'
+// })
+// .then( res => {
+//   console.log(res.status);
+//   if(res.ok){
+//     logIn( res.status === 200 );
+//     return res.json();
+//   }
+//   logIn( false );
+//   return Promise.reject(res);
+// })
+// .then( res => console.log(res))
+// .catch( error => {
+//   if (typeof error.json === "function") {
+//     error.json().then((jsonError: Error) => {
+//       console.log("Json error from API");
+//       console.log(jsonError);
+//     }).catch(() => {
+//       console.log("Generic error from API");
+//       console.log(error.statusText);
+//     });
+//   } else {
+//       console.log("Fetch error");
+//       console.log(error);
+//   }
+// });

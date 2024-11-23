@@ -25,7 +25,7 @@ export default function Home(){
   
   return (
     <>
-      <Link className='link adm red' to='admin'> Log In </Link>
+      <Link className='link adm red' to='/admin'> Log In </Link>
       <AnimalNav changeView={setAnimal}/>
       <SearchBar setUrl={setSearch}/>  
       <FigureSection currentURL={URL}/>

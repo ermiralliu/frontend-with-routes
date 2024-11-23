@@ -1,11 +1,11 @@
 import { useRef, useEffect} from "react";
-import { Animal } from "../Pages/Home/Components/FigureSection/FigureSection";
+import { AnimalObject } from '../AnimalObject';
 import { API_ANIMALS } from "../constants";
 import handleSubmit from "../eventHandler";
 
 //This probably will need to be refactored to something clearer
 
-export default function AnimalModal(props: { animal: Animal, setShow: (value: boolean) => void, isWritable: boolean, type?: string }) {
+export default function AnimalModal(props: { animal: AnimalObject, setShow: (value: boolean) => void, isWritable: boolean, type?: string }) {
 	const dialog = useRef<HTMLDialogElement>(null);
 
 	useEffect(() => {
@@ -36,7 +36,7 @@ export default function AnimalModal(props: { animal: Animal, setShow: (value: bo
 	);
 }
 
-function ModalTable(props: {animal: Animal, isWritable: boolean, children: React.ReactNode}){
+function ModalTable(props: {animal: AnimalObject, isWritable: boolean, children: React.ReactNode}){
 
   const body = Object.entries(props.animal).filter(([key]) => key !== 'image_url').map(([key, value], index) => <tr key={index}>
     <th> {key} </th>

@@ -1,22 +1,33 @@
 import { useState, useEffect } from "react";
-import { API_ANIMALS } from "../../../constants";
-import { Animal } from "../Admin";
+import { API_ANIMALS, API_USER } from "../../../constants";
 import { AnimalType } from "../../../AnimalChoice";
+import { useNavigate } from "react-router-dom";
+import { get } from "../../../eventHandler";
+import { AnimalObject } from "../../../AnimalObject";
 
 export function AnimalTable(props: { 
   animal: string, 
-  currentAnimal: React.MutableRefObject<Animal | null>,
+  currentAnimal: React.MutableRefObject<AnimalObject | null>,
   currentType: React.MutableRefObject<AnimalType>
   setDialog: (value: boolean) => void 
 }) {
-  const [animals, setAnimals] = useState([] as Animal[]);
+  const [animals, setAnimals] = useState([] as AnimalObject[]);
   useEffect(() => {
     const URL = API_ANIMALS + '/' + props.animal;
     fetch(URL).then(res => res.json())
-      .then((res: Animal[]) => setAnimals(res))
+      .then((res: AnimalObject[]) => setAnimals(res))
       .catch(err => console.error(err));
 
   }, [props.animal]);
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    get(API_USER).then( response => {
+      if(response === null)
+        navigate('login')
+    });
+  },[navigate]);
 
   if (animals == undefined || animals == null || animals.length === 0)
     return <h1>{props.animal}: No animals of this type </h1>;
@@ -25,8 +36,9 @@ export function AnimalTable(props: {
 
 
   return (
+    <>
+    <h1>{props.animal}: {animals.length} </h1>
     <table style={{ margin: '50px auto' }}>
-      <h1>{props.animal}: {animals.length} </h1>
       <tbody>
         <tr>
           {Object.keys(animals[0]).map((animalKey, index) => <th key={index}> {animalKey} </th>)}
@@ -43,5 +55,6 @@ export function AnimalTable(props: {
         )}
       </tbody>
     </table>
+    </>
   );
 }

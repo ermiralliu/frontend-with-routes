@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './AnimalInsertPage.css';
 import { API_ANIMALS } from "../../constants";
 import { SpecificSection } from "./Components/SpecificSection";
 import eventHandler from "../../eventHandler";
+import redirect from "../redirect";
 
 
 export default function AnimalInsertPage() {
 	const [animalType, setAnimalType] = useState('dog');
+  const [show, setShow] = useState(false);
+
+  useEffect(()=>{
+    redirect(setShow);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+  
+  if(!show)
+    return <></>;
 
 	//I have no idea why, but the input boxes are curved. Cool though, ig
 	return (
 		<>
-		<Link to='../' className='link adm red'> Back </Link>
+		<Link to='/admin/user' className='link adm red'> Back </Link>
 		<div className='main'>
 			<form className='middle' method="POST" onSubmit={(event)=> eventHandler(API_ANIMALS+'/'+ animalType, event)}>
 				<h1 className='text-middle'>General Information</h1>

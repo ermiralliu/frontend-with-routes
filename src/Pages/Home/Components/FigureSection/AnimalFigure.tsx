@@ -1,5 +1,5 @@
 import './AnimalFigure.css';
-import { Animal } from './FigureSection';
+import { Animal } from '../../../../AnimalObject';
 
 export default function AnimalFigure(
   args: {
