@@ -1,2 +1,0 @@
-- Make my own backend with animals and users, so we can finally see how this works
-- The user table will have an enum for type of admin => 'none', 'dog', 'cat', 'bird', 'all'

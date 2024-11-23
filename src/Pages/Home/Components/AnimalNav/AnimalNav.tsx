@@ -1,4 +1,4 @@
-import { AnimalType } from '../AnimalChoice';
+import { AnimalType } from '../../../../AnimalChoice';
 import './AnimalNav.css';
 
 const AnimalImgString : {[key:string]:string} = {
@@ -11,7 +11,7 @@ Object.freeze(AnimalImgString);
 
 function Choice( props:{ changeView: (a: AnimalType)=>void, children:string},) {
   const imgSrc = AnimalImgString[ props.children ];
-  const str = props.children.toLowerCase();
+  const str = props.children.slice(0, props.children.length-1).toLowerCase();
   return (
     <div className={'choice-div'}>
       <h1 className={'animal-nav-h'}>{props.children}</h1>

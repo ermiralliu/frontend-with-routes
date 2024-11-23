@@ -1,14 +1,15 @@
 import './AnimalFigure.css';
+import { Animal } from './FigureSection';
 
 export default function AnimalFigure(
   args: {
-    animal: { image: string, name: string, id: number, [key: string]: string | number },
+    animal: Animal,
     onClick: (index: number) => void
   }): JSX.Element {
   const animal = args.animal;
   return (
     <figure className='body-figure' onClick={() => args.onClick(animal.id - 1)}>
-      <img className="body-img" alt={animal.name} src={animal.image} />
+      <img className="body-img" alt={animal.name} src={animal.image_url} />
       <figcaption>
         Name:  {animal.name}<br />
         Origin:  {animal.origin || animal.place_of_found || "placeholder"}
