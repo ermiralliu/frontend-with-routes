@@ -13,7 +13,6 @@ export default function AnimalInsertPage() {
 
   useEffect(()=>{
     redirect(setShow);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   
   if(!show)
@@ -24,19 +23,21 @@ export default function AnimalInsertPage() {
 		<>
 		<Link to='/admin/user' className='link adm red'> Back </Link>
 		<div className='main'>
-			<form className='middle' method="POST" onSubmit={(event)=> eventHandler(API_ANIMALS+'/'+ animalType, event)}>
+			<form id='insert-form' className='middle' method="POST" onSubmit={(event)=> eventHandler(API_ANIMALS+'/'+ animalType, event)}>
 				<h1 className='text-middle'>General Information</h1>
-				<table>
-					<tbody>
-						{['name', 'description'].map((str: string, index) =>
-							<tr key={index}>
-								<td> {str.charAt(0).toUpperCase() + str.slice(1)} </td>
-								<td><input id={str} name={str} /></td>
-							</tr>)
-						}
-            <tr> <td>Image</td> <td> <input id='image' name='image' type="file" accept="image/*"></input></td></tr>
-					</tbody>
-				</table>
+        <div className="insert-div">
+          {['name', 'description'].map((str: string, index) =>
+            <div key={index}>
+              <label htmlFor={str}> {str.charAt(0).toUpperCase() + str.slice(1)+ ':'} </label>
+              <input id={str} name={str} />
+            </div>)
+          }
+          <div>
+            <label htmlFor="image">Image:</label>
+            <input id='image' name='image' type="file" accept="image/*"></input>
+          </div>
+        </div>
+        
 				<h2 className='text-middle'>Specific Information</h2>
 				<div className='text-middle'>
 					<button className="animal-button" onClick={() => setAnimalType('dog')} id="Dogs" type="button"> Dog </button>

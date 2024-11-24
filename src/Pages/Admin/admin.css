@@ -1,0 +1,40 @@
+#login-div{
+  padding: 14px;
+  border: 2px solid white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+#login-div> h2{
+  margin-top: 8px;
+}
+#login-div> div{
+  height: 5vh;
+  display: flex;
+  margin: 3px 0;
+}
+
+#login-div> div> *{
+  flex-grow:1;
+}
+
+#login-div> div> input{
+  /* width: 20vw; */
+  min-width: 15vw;
+  flex: 2;
+}
+#login-div> div> label{
+  display: flex;  /* needed to center the text*/
+  flex: 1;
+  align-items: center;
+  font-size: 1.2rem;
+  min-width: 7vw;
+  /* width: 10vw; */
+}
+#login-div> div> button{
+  margin-top: 5px;
+}
+#login-button{
+  width: 10px;
+}

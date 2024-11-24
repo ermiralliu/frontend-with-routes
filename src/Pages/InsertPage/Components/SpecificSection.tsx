@@ -15,20 +15,19 @@ export function SpecificSection(props: { animalType: string; }) {
 
   const array = animals[props.animalType];
 
+
+
   return (
-    <div id="specific-div" className="covered">
+    <div id="specific-div" className="covered insert-div">
       <h2 id="animal" className='text-middle'> {props.animalType.charAt(0).toUpperCase() + props.animalType.slice(1)} </h2>
-      <table id='specific'>
-        <tbody>
-          {array.map((value, index) => <tr key={index}>
-            <td> {value} </td>
-            <td>
-              <input name={`${value[0].toLowerCase() + value.substring(1, value.indexOf(' '))}`} />
-            </td>
-          </tr>
-          )}
-        </tbody>
-      </table>
+        {array.map((value, index) =>{
+          const name = value[0].toLowerCase() + value.substring(1, value.indexOf(' '));
+          return <div key={index}>
+            <label htmlFor={name}> {value} </label>
+            <input id={name} name={name} />
+          </div>
+        } 
+        )}
     </div>
   );
 }

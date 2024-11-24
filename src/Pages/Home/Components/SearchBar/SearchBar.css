@@ -1,6 +1,6 @@
 .middle{
     display: block;
-    width: 30vw;
+    /* width: 30vw;  this part accidentaly ruined the form in the animal insert page*/
     margin: auto;
     padding-top: 1vh;
 }

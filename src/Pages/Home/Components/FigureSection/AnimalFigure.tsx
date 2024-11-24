@@ -1,9 +1,9 @@
 import './AnimalFigure.css';
-import { Animal } from '../../../../AnimalObject';
+import { AnimalObject } from '../../../../AnimalObject';
 
 export default function AnimalFigure(
   args: {
-    animal: Animal,
+    animal: AnimalObject,
     onClick: (index: number) => void
   }): JSX.Element {
   const animal = args.animal;
