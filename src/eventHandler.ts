@@ -1,24 +1,34 @@
 import { FormEvent } from "react";
 import { API_ANIMALS, API_LOGIN } from "./constants";
+import { AnimalType } from "./AnimalChoice";
 
 enum DataVariant{
   FORM,
   JSON
 }
 
-function prepareForm(event: FormEvent, variant: DataVariant){ //and the fetch headers
+function prepareForm(event: FormEvent, variant: DataVariant){ //prepares the body and the fetch headers
   event.preventDefault();
   const form = new FormData(event.target as HTMLFormElement);
   const headers: {'Accept':string, 'Content-Type'?: string} = {'Accept': 'application/json'};
   if(variant === DataVariant.FORM)
-    return {form, headers};
+    return {body: form, headers};
   
+  //this next part doesn't really seem useful ngl
   const data: { [key: string]: FormDataEntryValue } = {};
   for (const [key, value] of form.entries())
     data[key] = value;
   headers['Content-Type'] = 'application/json';
-  return {form: data, headers};
+  return {body: JSON.stringify(data), headers};
 }
+// this will be used instead of the enum thing
+// function formToJson(args : {form: FormData, headers: { Accept: string, 'Content-Type': string }}){
+//   const data: { [key: string]: FormDataEntryValue } = {};
+//   for (const [key, value] of args.form.entries())
+//     data[key] = value;
+//   args.headers['Content-Type'] = 'application/json';
+//   return {form: data, headers: args.headers};
+// }
 
 export async function get(url: string){
   const res = await fetch(url, {
@@ -36,9 +46,8 @@ export async function get(url: string){
 }
 
 export async function postLogin(event: FormEvent){
-  const {form, headers} = prepareForm(event, DataVariant.JSON);
+  const {body, headers} = prepareForm(event, DataVariant.JSON);
   
-  const body = JSON.stringify(form);
   const res = await fetch(API_LOGIN, {
     credentials: 'include',
     headers,
@@ -50,10 +59,11 @@ export async function postLogin(event: FormEvent){
   return false;
 }
 
-export async function postAnimal(event: FormEvent){
-  const {form, headers} = prepareForm(event, DataVariant.FORM); 
-  const body = JSON.stringify(form);
-  const res = await fetch(API_ANIMALS, {
+export async function postAnimal(event: FormEvent, type: string){
+  const {body, headers} = prepareForm(event, DataVariant.FORM); 
+  const url = API_ANIMALS + '/' +type;
+
+  const res = await fetch(url, {
     credentials: 'include',
     headers,
     method: 'POST',
@@ -63,72 +73,47 @@ export async function postAnimal(event: FormEvent){
     console.log("response is not okay");
     return;
   }
-  alert((await res.json() as {message:string}).message);
+  alert('response is okay');
 }
 
-export async function putAnimal(event: FormEvent, id: number){
-  await modifyAnimal(event, id, 'PUT');
-}
-export async function deleteAnimal(event: FormEvent, id: number){
-  await modifyAnimal(event, id, 'DELETE');
+export async function deleteAnimal(type: AnimalType, id: number){
+  const url = API_ANIMALS + '/' + type +'/'+ id;
+
+  const res = await fetch(url, {
+    credentials: 'include',
+    headers: { 'Accept' : 'application/json'},
+    method: 'DELETE',
+    body: null
+  });
+  if(!res.ok){
+    console.log("response is not okay");
+    return;
+  }
+  const {message} = await res.json() as {message:string};
+  alert(message);
+  window.location.reload();
 }
 
-async function modifyAnimal(event: FormEvent, id: number, method: 'PUT'| 'DELETE'){
-  const {form, headers} = prepareForm(event, DataVariant.FORM); 
-  const body = JSON.stringify(form);
-  const url = API_ANIMALS + '/' + id;
+export async function putAnimal(event: FormEvent, type: AnimalType, id: number){
+  const {body, headers} = prepareForm(event, DataVariant.FORM) as {body: FormData, headers: {Accept: string} }; //specifying the type so the FormData-specific methods appear in the editor 
+  body.delete('id');
+  const url = API_ANIMALS + '/' + type +'/' + id;
 
   const res = await fetch(url, {
     credentials: 'include',
     headers,
-    method,
-    body
+    method: 'PUT',
+    body,
   });
-  if(!res.ok)
+  if(!res.ok){
+    console.log("response is not okay");
     return;
+  }
+    
   const {message} = await res.json() as {message:string};
   alert(message);
+  window.location.reload();
 }
-
-export default function handleSubmit(
-  url: string, 
-  event: FormEvent, 
-  method: string = 'POST', 
-  changeStatus?: (stat: number| ((a:number)=> number)) => void,
-  withImage: boolean = true
-) {
-  event.preventDefault();
-  const form = new FormData(event.target as HTMLFormElement);
-  const data: { [key: string]: FormDataEntryValue; } = {};
-  for (const [key, value] of form.entries())
-    data[key] = value;
-
-  console.log(data);
-
-  const body = withImage ? form : JSON.stringify(data);
-  
-  const headers: {[key: string]: string} = { 'Accept': 'application/json' };
-  if(!withImage) headers['Content-Type'] = 'application/json';
-
-  fetch(url, {
-    credentials: 'include', //needed to send and recieve cookies
-    headers,
-    method,
-    body
-  }).then(res =>{
-    if(!res.ok){
-      if(changeStatus)
-        changeStatus(e=>e+1);
-      return Promise.reject(res);
-    }
-    return res.json();
-  }).then(res => {
-    if(changeStatus)
-      changeStatus(res.status);
-    console.log(res);
-  }).catch(err => console.error(err));
-}
-
 
 // below is a more complete fetch:
 

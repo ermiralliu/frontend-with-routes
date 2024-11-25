@@ -1,7 +1,8 @@
 import { useMemo } from "react";
+import { AnimalType } from "../../../AnimalChoice";
 
-export function SpecificSection(props: { animalType: string; }) {
-  const animals: { [key: string]: string[]; } = useMemo(() => {
+export function SpecificSection(props: { animalType: AnimalType; }) {
+  const animals = useMemo(() => {
     console.log("using memo"); //okay it only gets calculated once as expected
     const cat = ['Origin ', 'Temperament ', 'Colors (separate different ones with commas)'];
     const dog = ['Breed_Group ', 'Size ', 'Lifespan ', ...cat];

@@ -24,6 +24,7 @@ export function LoggedIn() {
 
   return (<>
     <Link to='../new' className='blue link adm '>  New </Link>
+    <Link to='/' className='link adm red'> Back </Link>
     <div>
       <h1 style={{ textAlign: 'center', marginTop: 0, paddingTop: 10 }}> Haha, you admin now </h1>
       {['dog', 'cat', 'bird'].map((animal, index) => <AnimalTable 

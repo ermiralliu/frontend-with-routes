@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimalType, Animal } from '../../AnimalChoice';
+import { AnimalType } from '../../AnimalChoice';
 import {FigureSection, SearchBar, AnimalNav} from './Components';
 import { Link } from 'react-router-dom';
 //import { About, Contact } from '../Components/FigureSection'; we're gonna put these inside a dialog and do the eventHandling later
@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 export default function Home(){
   // const [animal, setAnimal] = useState<AnimalType>(localStorage.getItem('animal') as AnimalType ?? Animal.DOG);
-  const [animal, setAnimal] = useState<AnimalType>(Animal.CAT);
+  const [animal, setAnimal] = useState<AnimalType>('cat');
   const [search, setSearch] = useState<string>('');
   
   const animalToSave = useRef(animal);

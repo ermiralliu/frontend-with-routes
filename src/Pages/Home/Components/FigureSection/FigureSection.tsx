@@ -20,8 +20,8 @@ export default function FigureSection(props:{currentURL: string}): JSX.Element{ 
 	}, [props.currentURL]);  //it only works when currentURL changes
 
 	const fig = figures?.map((element, index)=>      //we make an animal section for each animal
-		<AnimalFigure key={index} animal={element} onClick={ (currentAnimal:number)=> {
-			animal.current = currentAnimal;
+		<AnimalFigure key={index} animal={element} onClick={ ()=> {
+			animal.current = index; //I initally was using the animal id as index BRUH
 			setModal( true );
 		} }/>    
 	);

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './AnimalInsertPage.css';
-import { API_ANIMALS } from "../../constants";
 import { SpecificSection } from "./Components/SpecificSection";
-import eventHandler from "../../eventHandler";
 import redirect from "../redirect";
+import { AnimalType } from "../../AnimalChoice";
+import { postAnimal } from "../../eventHandler";
 
 
 export default function AnimalInsertPage() {
-	const [animalType, setAnimalType] = useState('dog');
+	const [animalType, setAnimalType] = useState<AnimalType>('dog');
   const [show, setShow] = useState(false);
 
   useEffect(()=>{
@@ -23,7 +23,7 @@ export default function AnimalInsertPage() {
 		<>
 		<Link to='/admin/user' className='link adm red'> Back </Link>
 		<div className='main'>
-			<form id='insert-form' className='middle' method="POST" onSubmit={(event)=> eventHandler(API_ANIMALS+'/'+ animalType, event)}>
+			<form id='insert-form' className='middle' method="POST" onSubmit={(event)=> postAnimal(event, animalType)}>
 				<h1 className='text-middle'>General Information</h1>
         <div className="insert-div">
           {['name', 'description'].map((str: string, index) =>
